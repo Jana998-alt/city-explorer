@@ -17,7 +17,6 @@ class App extends React.Component {
       cityName : '',
       lon: 0,
       lat: 0,
-      map:'', 
       show: false,
     }
   }
@@ -42,7 +41,9 @@ class App extends React.Component {
    catch{
     this.setState ({
       show:true,
-      
+      cityName : '',
+      lon: 0,
+      lat: 0,
     })
    }
 
