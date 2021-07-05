@@ -24,7 +24,7 @@ class App extends React.Component {
    event.preventDefault();
 
     // let cityName = 
-    let url = `https://eu1.locationiq.com/v1/search.php?key=pk.3130cae6529e5d2c225c5f40822dca62&q=${event.target.cityName.value}&format=json`;
+    let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${event.target.cityName.value}&format=json`;
 
     let theData = await axios.get(url);
 
@@ -54,7 +54,7 @@ class App extends React.Component {
       </form>
 
       <Card style={{ width: '18rem'}}>
-      <Card.Img variant="top" src={`https://maps.locationiq.com/v3/staticmap?key=pk.3130cae6529e5d2c225c5f40822dca62&center=${this.state.lat},${this.state.lon}&zoom=13`} alt={this.state.cityName}/>
+      <Card.Img variant="top" src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&center=${this.state.lat},${this.state.lon}&zoom=13`} alt={this.state.cityName}/>
       <Card.Header>{`${this.state.cityName}`}</Card.Header>
       <ListGroup variant="flush">
         <ListGroup.Item>{`longitude: ${this.state.lon}`}</ListGroup.Item>
