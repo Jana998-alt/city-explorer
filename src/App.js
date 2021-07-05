@@ -34,6 +34,7 @@ class App extends React.Component {
       lat : theData.data[0].lat,
     })
 
+
   }
   
   
