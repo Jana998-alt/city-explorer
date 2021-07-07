@@ -54,6 +54,8 @@ class App extends React.Component {
       lat : locationData.data[0].lat,
       show: false,
     })
+    
+    console.log(this.state.lat + "   "+this.state.lon)
 
     await this.getWeatherData();
     console.log(this.state.currentCityWeatherData);
