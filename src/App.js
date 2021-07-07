@@ -4,10 +4,14 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Alert from 'react-bootstrap/Alert';
 
-import { construct } from 'harmony-reflect';
+
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 // import reactDom from 'react-dom';
+
+import Weather from './weather';
+
+
 
 class App extends React.Component {
   
@@ -18,7 +22,20 @@ class App extends React.Component {
       lon: 0,
       lat: 0,
       show: false,
+      showTable: false,
+      currentCityWeatherData: [],
     }
+  }
+
+  getWeatherData = async() => {
+    let weatherData = await axios.get(`${process.env.REACT_APP_SERVER}/weather?lon=${this.state.lon}&lat=${this.state.lat}`)
+
+  
+  this.setState({
+    currentCityWeatherData : weatherData.data,
+    showTable : true,
+  })
+
   }
 
   getLocation = async (event) => {
@@ -31,11 +48,15 @@ class App extends React.Component {
 
     let locationData = await axios.get(url);
 
-    this.setState ({
+    await this.setState ({
       cityName : event.target.cityName.value,
       lon : locationData.data[0].lon,
       lat : locationData.data[0].lat,
+      show: false,
     })
+
+    await this.getWeatherData();
+    console.log(this.state.currentCityWeatherData);
     }
 
    catch{
@@ -72,17 +93,15 @@ class App extends React.Component {
       <Card.Header>
         {`${this.state.cityName}`}
         <br/>
-        <Alert show={this.state.show} key='warning' variant='warning'>City name is not valid!</Alert>
+        <Alert show={this.state.show} key='warning' variant='warning'>Error!</Alert>
         </Card.Header>
-
-
-
       <ListGroup variant="flush">
         <ListGroup.Item>{`longitude: ${this.state.lon}`}</ListGroup.Item>
         <ListGroup.Item>{`latitude: ${this.state.lat}`}</ListGroup.Item>
-        
       </ListGroup>
     </Card>
+
+    <Weather showTable={this.state.showTable} currentCityWeatherData={this.state.currentCityWeatherData} />
     </div>
   )
 }
