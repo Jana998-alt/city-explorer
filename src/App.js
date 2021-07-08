@@ -31,7 +31,9 @@ class App extends React.Component {
   }
 
   getWeatherData = async() => {
+
     let weatherData = await axios.get(`${process.env.REACT_APP_SERVER}/weather?lon=${this.state.lon}&lat=${this.state.lat}&city=${this.state.cityName}`)
+
 
   
   this.setState({
@@ -50,6 +52,7 @@ class App extends React.Component {
 
       let locationData = await axios.get(url);
 
+
       await this.setState ({
         cityName : event.target.cityName.value,
         lon : locationData.data[0].lon,
@@ -59,6 +62,7 @@ class App extends React.Component {
 
       await this.getWeatherData();
       console.log(this.state.currentCityWeatherData);
+
 
       this.getMoviesInfo();
     }
@@ -132,3 +136,4 @@ export default App;
 
 
 // https://jana-city-explorer.netlify.app/ 
+// https://city-explorer-api-ltuc.herokuapp.com
