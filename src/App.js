@@ -3,6 +3,8 @@ import React from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Alert from 'react-bootstrap/Alert';
+import Movies from './Movies';
+
 
 
 import Card from 'react-bootstrap/Card';
@@ -24,11 +26,12 @@ class App extends React.Component {
       show: false,
       showTable: false,
       currentCityWeatherData: [],
+      currentCityMoviesData: [],
     }
   }
 
   getWeatherData = async() => {
-    let weatherData = await axios.get(`${process.env.REACT_APP_SERVER}/weather?lon=${this.state.lon}&lat=${this.state.lat}`)
+    let weatherData = await axios.get(`${process.env.REACT_APP_SERVER}/weather?lon=${this.state.lon}&lat=${this.state.lat}&city=${this.state.cityName}`)
 
   
   this.setState({
@@ -43,22 +46,21 @@ class App extends React.Component {
     try{
       event.preventDefault();
 
-   
-    let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${event.target.cityName.value}&format=json`;
+      let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${event.target.cityName.value}&format=json`;
 
-    let locationData = await axios.get(url);
+      let locationData = await axios.get(url);
 
-    await this.setState ({
-      cityName : event.target.cityName.value,
-      lon : locationData.data[0].lon,
-      lat : locationData.data[0].lat,
-      show: false,
-    })
-    
-    console.log(this.state.lat + "   "+this.state.lon)
+      await this.setState ({
+        cityName : event.target.cityName.value,
+        lon : locationData.data[0].lon,
+        lat : locationData.data[0].lat,
+        show: false,
+      })
 
-    await this.getWeatherData();
-    console.log(this.state.currentCityWeatherData);
+      await this.getWeatherData();
+      console.log(this.state.currentCityWeatherData);
+
+      this.getMoviesInfo();
     }
 
    catch{
@@ -73,7 +75,20 @@ class App extends React.Component {
 
   }
   
-  
+  getMoviesInfo = async() =>{
+    let url=`${process.env.REACT_APP_SERVER}/movies?query=${this.state.cityName}`
+    axios.get(url).then(moviesDataFromServer => {
+
+      this.setState({currentCityMoviesData:moviesDataFromServer.data, })
+    }
+    )
+
+  }
+
+
+
+
+
   render() { 
 
     return(
@@ -104,6 +119,8 @@ class App extends React.Component {
     </Card>
 
     <Weather showTable={this.state.showTable} currentCityWeatherData={this.state.currentCityWeatherData} />
+
+    <Movies currentCityMoviesData={this.state.currentCityMoviesData}/>
     </div>
   )
 }
