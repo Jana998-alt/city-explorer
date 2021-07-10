@@ -34,16 +34,14 @@ class App extends React.Component {
 
     let weatherData = await axios.get(`${process.env.REACT_APP_SERVER}/weather?lon=${this.state.lon}&lat=${this.state.lat}&city=${this.state.cityName}`)
 
-
-  
-  this.setState({
-    currentCityWeatherData : weatherData.data,
-    showTable : true,
-  })
+      this.setState({
+        currentCityWeatherData : weatherData.data,
+        showTable : true,
+      })
 
   }
 
-  getLocation = async (event) => {
+  getLocation = async(event) => {
 
     try{
       event.preventDefault();
@@ -131,8 +129,6 @@ class App extends React.Component {
 }
 
 export default App;
-
-
 
 
 // https://jana-city-explorer.netlify.app/ 

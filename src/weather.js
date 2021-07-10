@@ -2,26 +2,20 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import './weather.css';
+import WeatherDay from './weatherDay';
 
 class Weather extends React.Component{
     // currentCityWeatherData
     handleTableData() {
         let currentCityWeatherData = this.props.currentCityWeatherData; 
-        let tableDataElements = [];
-        for(let i=0; i<currentCityWeatherData.length;i++){
-            tableDataElements.push(
-                <tbody>
-                <tr>
-                <td>{currentCityWeatherData[i].date}</td>
-                <td>{currentCityWeatherData[i].description}</td>
-                </tr>
-            </tbody>
-            )
-            console.log('hey hey');
-           
-        }
-                
-        return tableDataElements
+
+        let dailyWeatherArray = currentCityWeatherData.map((dayDataObject)=>{
+            console.log(currentCityWeatherData);
+            return <WeatherDay dayDataObject={dayDataObject}/>
+            
+        })
+            
+        return dailyWeatherArray;
     }
 
     render (){
